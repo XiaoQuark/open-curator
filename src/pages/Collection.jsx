@@ -26,6 +26,8 @@ import {
 
 export default function Collection() {
 	const [artworks, setArtworks] = useState([]);
+	const [filteredArtworks, setFilteredArtworks] = useState([]);
+	const [artists, setArtists] = useState([]);
 
 	useEffect(() => {
 		const fetchArtworks = async () => {
@@ -36,7 +38,6 @@ export default function Collection() {
 					20
 				);
 
-				// Normalize and combine the results
 				const chicagoArtworks = chicagoResponse.data.map(
 					normaliseChicagoResponse
 				);
@@ -48,9 +49,19 @@ export default function Collection() {
 					...chicagoArtworks,
 					...rijksmuseumArtworks,
 				];
-				console.log("Combined Artworks:", combinedArtworks); // Debugging the response
+
+				// Get a unique list of artists for the dropdown
+				const artistNames = [
+					...new Set(
+						combinedArtworks.map(
+							(artwork) => artwork.artist || "Unknown Artist"
+						)
+					),
+				];
 
 				setArtworks(combinedArtworks);
+				setFilteredArtworks(combinedArtworks);
+				setArtists(artistNames);
 			} catch (error) {
 				console.error("Error fetching artworks:", error);
 			}
@@ -58,6 +69,50 @@ export default function Collection() {
 
 		fetchArtworks();
 	}, []);
+
+	const handleApplyFilters = ({
+		collections,
+		centuryRange,
+		artist,
+		sortBy,
+	}) => {
+		let filtered = artworks;
+
+		// Filter by collection
+		if (collections.length > 0) {
+			filtered = filtered.filter((artwork) =>
+				collections.includes(artwork.collection)
+			);
+		}
+
+		// Filter by century range
+		filtered = filtered.filter((artwork) => {
+			const year = parseInt(artwork.date);
+			return (
+				!isNaN(year) &&
+				year >= centuryRange[0] &&
+				year <= centuryRange[1]
+			);
+		});
+
+		// Filter by artist
+		if (artist) {
+			filtered = filtered.filter((artwork) => artwork.artist === artist);
+		}
+
+		// Sort by selected option
+		if (sortBy === "artist-asc") {
+			filtered.sort((a, b) => a.artist.localeCompare(b.artist));
+		} else if (sortBy === "artist-desc") {
+			filtered.sort((a, b) => b.artist.localeCompare(a.artist));
+		} else if (sortBy === "year-asc") {
+			filtered.sort((a, b) => parseInt(a.date) - parseInt(b.date));
+		} else if (sortBy === "year-desc") {
+			filtered.sort((a, b) => parseInt(b.date) - parseInt(a.date));
+		}
+
+		setFilteredArtworks(filtered);
+	};
 
 	return (
 		<Container maxW="5xl" mt={14} p={4}>
@@ -88,7 +143,10 @@ export default function Collection() {
 					borderRight="1px"
 					borderRightColor={useColorModeValue("gray.200", "gray.700")}
 				>
-					<CustomSearch />
+					<CustomSearch
+						onApplyFilters={handleApplyFilters}
+						artists={artists}
+					/>
 				</GridItem>
 
 				{/* Main content */}
@@ -101,7 +159,7 @@ export default function Collection() {
 						}}
 						gap={2}
 					>
-						{artworks.map((artwork) => (
+						{filteredArtworks.map((artwork) => (
 							<ArtCard key={artwork.id} artwork={artwork} />
 						))}
 					</Grid>
