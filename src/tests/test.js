@@ -1,9 +1,9 @@
-import { fetchChicagoArtworks } from "./src/api/chicagoApi.js";
-import { fetchWellcomeArtworks } from "./src/api/wellcomeApi.js";
+import { fetchChicagoArtworks } from "../api/chicagoApi.js";
+import { fetchWellcomeArtworks } from "../api/wellcomeApi.js";
 import {
-	normalizeChicagoArtwork,
-	normalizeWellcomeArtwork,
-} from "./src/api/utils/normalizeData.js";
+	normaliseChicagoResponse,
+	normaliseWellcomeResponse,
+} from "../api/utils/normaliseData.js";
 
 const testFetchArtworks = async () => {
 	try {
@@ -11,14 +11,22 @@ const testFetchArtworks = async () => {
 
 		// Fetch data from both APIs
 		const chicagoResponse = await fetchChicagoArtworks();
+		console.log("Chicago API Response:", chicagoResponse);
+
 		const wellcomeResponse = await fetchWellcomeArtworks();
+		console.log("Wellcome API Response:", wellcomeResponse);
+
+		if (!chicagoResponse || !wellcomeResponse) {
+			console.error("One of the API responses is null.");
+			return;
+		}
 
 		// Normalize the data
 		const chicagoArtworks = chicagoResponse.data.map(
-			normalizeChicagoArtwork
+			normaliseChicagoResponse
 		);
 		const wellcomeArtworks = wellcomeResponse.results.map(
-			normalizeWellcomeArtwork
+			normaliseWellcomeResponse
 		);
 
 		// Combine and print the results
