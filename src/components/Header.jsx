@@ -28,6 +28,11 @@ export default function Header() {
 				borderStyle={"solid"}
 				borderColor={useColorModeValue("gray.200", "gray.900")}
 				align={"center"}
+				position="fixed"
+				left={0}
+				right={0}
+				top={0}
+				zIndex={10}
 			>
 				<Flex
 					flex={{ base: 1, md: "auto" }}
