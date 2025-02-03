@@ -1,8 +1,8 @@
 import { fetchChicagoArtworks } from "../api/chicagoApi.js";
-import { fetchWellcomeArtworks } from "../api/wellcomeApi.js";
+import { fetchRijksmuseumArtworks } from "../api/rijksmuseumApi.js";
 import {
 	normaliseChicagoResponse,
-	normaliseWellcomeResponse,
+	normaliseRijksmuseumResponse,
 } from "../api/utils/normaliseData.js";
 
 const testFetchArtworks = async () => {
@@ -13,24 +13,24 @@ const testFetchArtworks = async () => {
 		const chicagoResponse = await fetchChicagoArtworks();
 		console.log("Chicago API Response:", chicagoResponse);
 
-		const wellcomeResponse = await fetchWellcomeArtworks();
-		console.log("Wellcome API Response:", wellcomeResponse);
+		const rijksmuseumResponse = await fetchRijksmuseumArtworks();
+		console.log("Rijksmuseum API Response:", rijksmuseumResponse);
 
-		if (!chicagoResponse || !wellcomeResponse) {
+		if (!chicagoResponse || !rijksmuseumResponse) {
 			console.error("One of the API responses is null.");
 			return;
 		}
 
-		// Normalize the data
-		const chicagoArtworks = chicagoResponse.data.map(
-			normaliseChicagoResponse
+		// Normalize the data and pass the collection name
+		const chicagoArtworks = chicagoResponse.data.map((artwork) =>
+			normaliseChicagoResponse(artwork, "Chicago Art Institute")
 		);
-		const wellcomeArtworks = wellcomeResponse.results.map(
-			normaliseWellcomeResponse
+		const rijksmuseumArtworks = rijksmuseumResponse.artObjects.map(
+			(artwork) => normaliseRijksmuseumResponse(artwork, "Rijksmuseum")
 		);
 
 		// Combine and print the results
-		const combinedArtworks = [...chicagoArtworks, ...wellcomeArtworks];
+		const combinedArtworks = [...chicagoArtworks, ...rijksmuseumArtworks];
 		console.log("Combined Artworks:", combinedArtworks);
 	} catch (error) {
 		console.error("Error fetching or normalizing artworks:", error);

@@ -1,6 +1,9 @@
 import { Flex, Box, Image, useColorModeValue, Text } from "@chakra-ui/react";
 
-export default function ArtCard() {
+export default function ArtCard({ artwork }) {
+	const { image, altText, title, author, date, medium, origin, collection } =
+		artwork;
+
 	return (
 		<Flex p={50} w="full" alignItems="center" justifyContent="center">
 			<Box
@@ -12,16 +15,41 @@ export default function ArtCard() {
 				position="relative"
 			>
 				<Image
-					src={
-						"https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=4600&q=80"
-					}
-					alt={"Wayfarer Classic"}
-					// alt={`Picture of ${data.name}`}
+					src={image}
+					alt={altText || "Artwork image"}
 					roundedTop="lg"
+					objectFit="cover"
+					width="100%"
+					height="200px"
 				/>
 
 				<Box p="6">
-					<Flex
+					<Text fontSize="xl" fontWeight="bold" isTruncated>
+						{title}
+					</Text>
+					<Text fontSize="md" color="gray.500">
+						{author}
+					</Text>
+					<Text fontSize="sm" color="gray.600">
+						Date: {date}
+					</Text>
+					<Text fontSize="sm" color="gray.600">
+						Origin: {origin}
+					</Text>
+					<Text fontSize="sm" color="gray.600">
+						Medium: {medium}
+					</Text>
+					<Text fontSize="sm" fontWeight="semibold" color="blue.500">
+						Collection: {collection}
+					</Text>
+				</Box>
+			</Box>
+		</Flex>
+	);
+}
+
+{
+	/* <Flex
 						mt="1"
 						justifyContent="space-between"
 						alignContent="center"
@@ -35,9 +63,11 @@ export default function ArtCard() {
 						>
 							<Text>Art 1</Text>
 						</Box>
-					</Flex>
+					</Flex> */
+}
 
-					<Flex
+{
+	/* <Flex
 						mt="1"
 						justifyContent="space-between"
 						alignContent="center"
@@ -51,9 +81,5 @@ export default function ArtCard() {
 						>
 							<Text>Author 1</Text>
 						</Box>
-					</Flex>
-				</Box>
-			</Box>
-		</Flex>
-	);
+					</Flex> */
 }

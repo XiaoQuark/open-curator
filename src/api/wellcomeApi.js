@@ -10,7 +10,8 @@ export const fetchWellcomeArtworks = async (page = 1, pageSize = 20) => {
 			params: {
 				page,
 				pageSize,
-				include: "contributors,production,genres,subjects,images",
+				include:
+					"contributors,production,genres,subjects,images,production",
 			},
 		});
 		return response.data;
