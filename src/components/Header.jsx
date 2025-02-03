@@ -109,9 +109,9 @@ export default function Header() {
 const DesktopNav = () => {
 	return (
 		<Stack direction={"row"} spacing={4}>
-			{NAV_ITEMS.map((navItem) => (
-				<Box key={navItem.label}></Box>
-			))}
+			<Link to="/">Home</Link>
+			<NavLink to="/about">About</NavLink>
+			<NavLink to="/collection">Collection</NavLink>
 		</Stack>
 	);
 };
@@ -119,52 +119,24 @@ const DesktopNav = () => {
 const MobileNav = () => {
 	return (
 		<Stack
+			direction={"column"}
+			spacing={4}
 			bg={useColorModeValue("white", "gray.800")}
 			p={4}
 			display={{ md: "none" }}
 		>
-			{NAV_ITEMS.map((navItem) => (
-				<Box key={navItem.label}></Box>
-			))}
+			<Link to="/">Home</Link>
+			<NavLink to="/about">About</NavLink>
+			<NavLink to="/collection">Collection</NavLink>
 		</Stack>
 	);
 };
 
-const NAV_ITEMS = [
-	{
-		label: "Home",
-		href: "#",
-	},
-	{
-		label: "About",
-		href: "#",
-	},
-	{
-		label: "Collection",
-		href: "#",
-	},
-];
-
-// <Box
-// 	as="a"
-// 	px={2}
-// 	py={1}
-// 	rounded={"md"}
-// 	_hover={{
-// 		textDecoration: "none",
-// 		bg: useColorModeValue("gray.200", "gray.700"),
-// 	}}
-// 	href={"#"}
-// >
-// 	<p>Open Curator</p>
-// 	//{" "}
-// 	<nav className="nav_container">
-// 		// <Link to="/">Home</Link>
-// 		// <NavLink to="/about">About</NavLink>
-// 		// <NavLink to="/collection">Collection</NavLink>
-// 		//{" "}
-// 	</nav>
-// </Box>
-// // <header>
-// //
-// // </header>
+{
+	/* <p>Open Curator</p>
+<nav className="nav_container">
+		<Link to="/">Home</Link>
+		<NavLink to="/about">About</NavLink>
+		<NavLink to="/collection">Collection</NavLink>
+</nav> */
+}
